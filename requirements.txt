@@ -1,0 +1,1 @@
+tensorflow\nkeras\nnumpy\npandas\nmatplotlib\nstreamlit
