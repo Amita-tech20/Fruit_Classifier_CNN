@@ -13,8 +13,8 @@ IMG_SIZE = (180, 180)
 CONF_THRESHOLD = 0.70  # confidence threshold for warning
 
 # ---------- Load model ----------
-MODEL_PATH = r'C:\Users\Ankita\Desktop\Fruit_Classifier_CNN\Fruit_Recog_Model.h5'
-WEIGHTS_PATH = r'C:\Users\Ankita\Desktop\Fruit_Classifier_CNN\Fruit_Recog_Model.weights.h5'
+MODEL_PATH = "Fruit_Recog_Model.h5"
+WEIGHTS_PATH = "Fruit_Recog_Model.weights.h5"
 
 @st.cache_resource(show_spinner=False)
 def load_fruit_model():
@@ -32,8 +32,7 @@ model = load_fruit_model()
 def predict_topk(file_like, k=3):
     img = tf.keras.utils.load_img(file_like, target_size=IMG_SIZE)
     x = tf.keras.utils.img_to_array(img)
-    # x = x / 255.0  # Uncomment if your model expects normalized input
-    x = tf.expand_dims(x, 0)
+    x = tf.expand_dims(x, 0)  # shape: (1, 180, 180, 3)
     preds = model.predict(x, verbose=0)[0]
     probs = tf.nn.softmax(preds).numpy()
     idxs = np.argsort(probs)[::-1][:k]
@@ -44,7 +43,7 @@ def render_predictions(title, preds):
     best_label, best_p = preds[0]
 
     if best_p < CONF_THRESHOLD:
-        st.error(f"❌ This doesn't seem to be a known flower from the trained set.\n"
+        st.error(f"❌ This doesn't seem to be a known fruit from the trained set.\n"
                  f"Highest match: {best_label} ({best_p*100:.2f}%)")
     else:
         st.success(f"Prediction: **{best_label}** ({best_p*100:.2f}%)")
